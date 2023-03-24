@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "58632345191",
+    "project_id": "mediplanner-2f682",
+    "storage_bucket": "mediplanner-2f682.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58632345191:android:d56c1f75a1f3266bca66c2",
+        "android_client_info": {
+          "package_name": "com.andrey.mediplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58632345191-9q3o9343egnprqbn5gl94vmi2iqov9dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlVn4cuH9vYT-uS0ZHRrFy8W1CHmojhag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58632345191-9q3o9343egnprqbn5gl94vmi2iqov9dn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "58632345191-mq483qu42ibeol1fn3bctr6i5ueia96a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mediplanner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58632345191:android:8a69d2589bda9e2eca66c2",
+        "android_client_info": {
+          "package_name": "com.example.mediplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58632345191-9q3o9343egnprqbn5gl94vmi2iqov9dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlVn4cuH9vYT-uS0ZHRrFy8W1CHmojhag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58632345191-9q3o9343egnprqbn5gl94vmi2iqov9dn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "58632345191-mq483qu42ibeol1fn3bctr6i5ueia96a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mediplanner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
