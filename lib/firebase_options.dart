@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBlVn4cuH9vYT-uS0ZHRrFy8W1CHmojhag',
-    appId: '1:58632345191:android:8a69d2589bda9e2eca66c2',
+    appId: '1:58632345191:android:74f66663e1df3751ca66c2',
     messagingSenderId: '58632345191',
     projectId: 'mediplanner-2f682',
     storageBucket: 'mediplanner-2f682.appspot.com',
@@ -67,8 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '58632345191',
     projectId: 'mediplanner-2f682',
     storageBucket: 'mediplanner-2f682.appspot.com',
-    iosClientId:
-        '58632345191-mq483qu42ibeol1fn3bctr6i5ueia96a.apps.googleusercontent.com',
+    iosClientId: '58632345191-mq483qu42ibeol1fn3bctr6i5ueia96a.apps.googleusercontent.com',
     iosBundleId: 'com.example.mediplanner',
   );
 
@@ -78,8 +77,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '58632345191',
     projectId: 'mediplanner-2f682',
     storageBucket: 'mediplanner-2f682.appspot.com',
-    iosClientId:
-        '58632345191-mq483qu42ibeol1fn3bctr6i5ueia96a.apps.googleusercontent.com',
+    iosClientId: '58632345191-mq483qu42ibeol1fn3bctr6i5ueia96a.apps.googleusercontent.com',
     iosBundleId: 'com.example.mediplanner',
   );
 }
