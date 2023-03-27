@@ -26,7 +26,7 @@ class AuthenticationRepository extends GetxController {
   }
 
   Future<void> createUserWithEmailAndPassword(
-      String email, String password, String name) async {
+      String email, String password, String name, bool isOlderly) async {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -38,15 +38,10 @@ class AuthenticationRepository extends GetxController {
             .set({
           'name': name,
           'email': email,
+          'isOlderly': isOlderly,
         });
+        Get.offAll(() => const LoginScreen());
       }
-      firebaseUser.value != null
-          ? Get.offAll(
-              () => const HomeScreen(),
-            )
-          : Get.offAll(
-              () => const LoginScreen(),
-            );
     } on FirebaseAuthException catch (e) {
       final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
       print(ex);
@@ -60,6 +55,7 @@ class AuthenticationRepository extends GetxController {
       String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Get.offAll(() => const HomeScreen());
     } on FirebaseAuthException catch (_) {
     } catch (_) {}
   }

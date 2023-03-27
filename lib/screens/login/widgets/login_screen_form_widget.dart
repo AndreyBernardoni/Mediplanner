@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controllers/signup_controller.dart';
+import '../../../controllers/login_controller.dart';
 
-class SignUpFormWidget extends StatelessWidget {
-  const SignUpFormWidget({super.key});
+class LoginFormWidget extends StatelessWidget {
+  const LoginFormWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SignUpController());
+    final controller = Get.put(LoginController());
     final _formkey = GlobalKey<FormState>();
 
     return Form(
       key: _formkey,
       child: Column(
         children: <Widget>[
-          TextFormField(
-            controller: controller.name,
-            decoration: const InputDecoration(
-              label: Text("Nome"),
-            ),
-          ),
           TextFormField(
             controller: controller.email,
             decoration: const InputDecoration(
@@ -33,34 +27,22 @@ class SignUpFormWidget extends StatelessWidget {
               label: Text("Senha"),
             ),
           ),
-          Obx(
-            () => CheckboxListTile(
-              title: const Text("Sou idoso"),
-              value: controller.isOlderly.value,
-              onChanged: (value) {
-                controller.isOlderly.value = value!;
-                print(controller.isOlderly.value);
-              },
-            ),
-          ),
           ElevatedButton(
             onPressed: () {
               if (_formkey.currentState!.validate()) {
-                SignUpController.instance.registerUser(
+                LoginController.instance.loginUser(
                   controller.email.text.trim(),
                   controller.password.text.trim(),
-                  controller.name.text.trim(),
-                  controller.isOlderly.value,
                 );
               }
             },
-            child: const Text("Cadastrar"),
+            child: const Text("Entrar"),
           ),
           ElevatedButton(
             onPressed: () {
-              Get.offNamed("/login");
+              Get.offNamed("/signup");
             },
-            child: const Text("Já tenho cadastro"),
+            child: const Text("Não possuo cadastro"),
           ),
         ],
       ),

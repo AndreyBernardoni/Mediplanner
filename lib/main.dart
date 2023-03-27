@@ -5,13 +5,16 @@ import 'package:mediplanner/firebase_options.dart';
 import 'package:mediplanner/repository/authentication_repository.dart';
 import 'package:mediplanner/screens/signup/signup_screen.dart';
 
+import 'screens/home/home_screen.dart';
+import 'screens/login/login_screen.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then(
-    (value) => Get.put(
-      AuthenticationRepository(),
+    (value) => Get.lazyPut(
+      () => AuthenticationRepository(),
     ),
   );
   runApp(
@@ -24,10 +27,26 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: SignUpScreen(),
+      initialRoute: '/signup',
+      getPages: [
+        GetPage(
+          name: '/signup',
+          page: () => SignUpScreen(),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => LoginScreen(),
+        ),
+        GetPage(
+          name: '/home',
+          page: () => HomeScreen(),
+        ),
+      ],
     );
   }
+
+  // Como fazer rotas nomeadas usando Getx
 }

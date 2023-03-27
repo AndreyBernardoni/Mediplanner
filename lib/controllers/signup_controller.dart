@@ -8,9 +8,11 @@ class SignUpController extends GetxController {
   final email = TextEditingController();
   final password = TextEditingController();
   final name = TextEditingController();
+  final isOlderly = false.obs;
 
-  void registerUser(String email, String password, String name) {
+  void registerUser(
+      String email, String password, String name, bool isOlderly) {
     AuthenticationRepository.instance
-        .createUserWithEmailAndPassword(email, password, name);
+        .createUserWithEmailAndPassword(email, password, name, isOlderly);
   }
 }
