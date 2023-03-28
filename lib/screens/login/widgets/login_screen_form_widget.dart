@@ -9,10 +9,10 @@ class LoginFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
-    final _formkey = GlobalKey<FormState>();
+    final formkey = GlobalKey<FormState>();
 
     return Form(
-      key: _formkey,
+      key: formkey,
       child: Column(
         children: <Widget>[
           TextFormField(
@@ -29,7 +29,7 @@ class LoginFormWidget extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (_formkey.currentState!.validate()) {
+              if (formkey.currentState!.validate()) {
                 LoginController.instance.loginUser(
                   controller.email.text.trim(),
                   controller.password.text.trim(),

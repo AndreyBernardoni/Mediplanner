@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +24,7 @@ class AuthenticationRepository extends GetxController {
   _setInitialScreen(User? user) {
     user == null
         ? Get.offAll(() => const LoginScreen())
-        : Get.offAll(() => const HomeScreen());
+        : Get.offAll(() => HomeScreen());
   }
 
   Future<void> createUserWithEmailAndPassword(
@@ -55,12 +57,13 @@ class AuthenticationRepository extends GetxController {
       String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.offAll(() => const HomeScreen());
+      Get.offAll(() => HomeScreen());
     } on FirebaseAuthException catch (_) {
     } catch (_) {}
   }
 
   Future<void> logout() async {
     await _auth.signOut();
+    Get.offAll(() => LoginScreen());
   }
 }

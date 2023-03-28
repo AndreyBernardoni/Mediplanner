@@ -1,25 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mediplanner/firebase_options.dart';
 import 'package:mediplanner/repository/authentication_repository.dart';
 import 'package:mediplanner/screens/signup/signup_screen.dart';
 
 import 'screens/home/home_screen.dart';
 import 'screens/login/login_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  ).then(
-    (value) => Get.lazyPut(
-      () => AuthenticationRepository(),
-    ),
-  );
-  runApp(
-    const MainApp(),
-  );
+  await Firebase.initializeApp();
+  Get.put(
+      AuthenticationRepository()); // Adiciona a instância do AuthenticationRepository no Get
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -34,11 +27,11 @@ class MainApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/signup',
-          page: () => SignUpScreen(),
+          page: () => const SignUpScreen(),
         ),
         GetPage(
           name: '/login',
-          page: () => LoginScreen(),
+          page: () => const LoginScreen(),
         ),
         GetPage(
           name: '/home',

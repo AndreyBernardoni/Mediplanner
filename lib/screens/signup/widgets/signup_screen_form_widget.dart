@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,10 +11,10 @@ class SignUpFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(SignUpController());
-    final _formkey = GlobalKey<FormState>();
+    final formkey = GlobalKey<FormState>();
 
     return Form(
-      key: _formkey,
+      key: formkey,
       child: Column(
         children: <Widget>[
           TextFormField(
@@ -45,7 +47,7 @@ class SignUpFormWidget extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (_formkey.currentState!.validate()) {
+              if (formkey.currentState!.validate()) {
                 SignUpController.instance.registerUser(
                   controller.email.text.trim(),
                   controller.password.text.trim(),
