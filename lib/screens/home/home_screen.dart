@@ -39,22 +39,32 @@ class HomeScreen extends StatelessWidget {
         }),
       ),
       body: Center(
-        child: Obx(() {
-          final user = homeController.user.value;
-          if (user != null) {
-            final userModel = user as UserModel;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Name: ${userModel.name}"),
-                Text("Email: ${userModel.email}"),
-                Text("É idoso: ${userModel.isOlderly}")
-              ],
-            );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        }),
+        child: Column(
+          children: [
+            Obx(() {
+              final user = homeController.user.value;
+              if (user != null) {
+                final userModel = user as UserModel;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Name: ${userModel.name}"),
+                    Text("Email: ${userModel.email}"),
+                    Text("É idoso: ${userModel.isOlderly}")
+                  ],
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }),
+            ElevatedButton(
+              onPressed: () {
+                Get.offAllNamed("/addMedicationScreen");
+              },
+              child: const Text("Adicionar Medicamento"),
+            ),
+          ],
+        ),
       ),
     );
   }
