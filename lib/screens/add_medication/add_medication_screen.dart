@@ -1,185 +1,136 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mediplanner/screens/home/home_screen.dart';
-import '../../models/medicine_model.dart';
-import '../../services/firebase_service.dart';
+import 'package:mediplanner/controllers/add_medication_screen_controller.dart';
 
-class AddMedicationScreen extends StatefulWidget {
-  @override
-  _AddMedicationScreenState createState() => _AddMedicationScreenState();
-}
+class AddMedicationScreen extends StatelessWidget {
+  final AddMedicationScreenController controller =
+      Get.put(AddMedicationScreenController());
 
-class _AddMedicationScreenState extends State<AddMedicationScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  final _nameController = TextEditingController();
-  final _quantityController = TextEditingController();
-  final _frequencyController = TextEditingController();
-  final _startDateController = TextEditingController();
-  final _endDateController = TextEditingController();
-
-  final FirebaseService _firebaseService = FirebaseService.instance;
-
-  List<String> _times = ['9:00 AM', '12:00 PM', '6:00 PM'];
-  List<TextEditingController> _timeControllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    for (var i = 0; i < _times.length; i++) {
-      _timeControllers.add(TextEditingController());
-    }
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _quantityController.dispose();
-    _frequencyController.dispose();
-    _startDateController.dispose();
-    _endDateController.dispose();
-    for (var i = 0; i < _timeControllers.length; i++) {
-      _timeControllers[i].dispose();
-    }
-    super.dispose();
-  }
-
-  void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      // Create medicineModel object
-      final medicineModel = MedicineModel(
-        name: _nameController.text,
-        quantity: int.parse(_quantityController.text),
-        frequency: _frequencyController.text,
-        startDate: DateTime.parse(_startDateController.text),
-        endDate: DateTime.parse(_endDateController.text),
-        times: _timeControllers
-            .map((timeController) => DateTime.parse(timeController.text))
-            .toList(),
-      );
-
-      // Save medicineModel object to Firebase Firestore
-      await _firebaseService
-          .addMedication(medicineModel as Map<String, dynamic>);
-
-      // Navigate to home screen
-      Get.offAll(() => HomeScreen());
-    }
-  }
+  AddMedicationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add MedicineModel'),
+        title: const Text('My Screen'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: ListView(
+      body: Obx(
+        () => Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
+              const Text('Nome'),
+              const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Digite seu nome',
+                ),
               ),
-              TextFormField(
-                controller: _quantityController,
-                decoration: InputDecoration(labelText: 'Amount'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an amount';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid amount';
-                  }
-                  return null;
-                },
+              const SizedBox(height: 16.0),
+              const Text('Quantidade'),
+              const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Digite a quantidade',
+                ),
               ),
-              TextFormField(
-                controller: _frequencyController,
-                decoration: InputDecoration(labelText: 'Frequency'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a frequency';
-                  }
-                  return null;
+              const SizedBox(height: 16.0),
+              const Text('Frequência'),
+              DropdownButton(
+                value: controller.frequency.value,
+                onChanged: (value) {
+                  controller.setFrequency(value!);
                 },
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _startDateController,
-                      decoration: InputDecoration(labelText: 'Start Date'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a start date';
-                        }
-                        if (DateTime.tryParse(value) == null) {
-                          return 'Please enter a valid start date';
-                        }
-                        return null;
-                      },
-                    ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'apenas alguns dias na semana',
+                    child: Text('Apenas alguns dias na semana'),
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _endDateController,
-                      decoration: InputDecoration(labelText: 'End Date'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter an end date';
-                        }
-                        if (DateTime.tryParse(value) == null) {
-                          return 'Please enter a valid end date';
-                        }
-                        return null;
-                      },
-                    ),
+                  DropdownMenuItem(
+                    value: 'todos os dias',
+                    child: Text('Todos os dias'),
                   ),
                 ],
               ),
-              SizedBox(height: 16),
-              Text('Times'),
-              SizedBox(height: 16),
-              for (var i = 0; i < _times.length; i++)
-                Row(
+              const SizedBox(height: 16.0),
+              if (controller.frequency.value ==
+                  'apenas alguns dias na semana') ...[
+                const Text('Dias da semana'),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
                   children: [
-                    Expanded(
-                      child: Text(_times[i]),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _timeControllers[i],
-                        decoration: InputDecoration(labelText: 'Time'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a time';
+                    for (final day in [
+                      'Seg',
+                      'Ter',
+                      'Qua',
+                      'Qui',
+                      'Sex',
+                      'Sáb',
+                      'Dom'
+                    ])
+                      GestureDetector(
+                        onTap: () {
+                          controller.toggleDay(day);
+                          if (controller.daysSelected.length == 7) {
+                            controller.daysSelected.clear();
+                            controller.frequency.value = 'todos os dias';
                           }
-                          if (DateTime.tryParse(value) == null) {
-                            return 'Please enter a valid time';
-                          }
-                          return null;
                         },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: controller.daysSelected.contains(day)
+                                ? Colors.blue
+                                : null,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          child: Text(day),
+                        ),
                       ),
-                    ),
                   ],
                 ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Submit'),
+              ],
+              const SizedBox(height: 16.0),
+              const Text('Horários'),
+              Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: [
+                  for (final time in controller.timesSelected)
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: Text(time),
+                    ),
+                  GestureDetector(
+                    onTap: () async {
+                      TimeOfDay? pickedTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      if (pickedTime != null) {
+                        controller.timesSelected.add(
+                            '${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}');
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.blue,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: const Text('Adicionar horário'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
