@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,9 +31,11 @@ class AuthenticationRepository extends GetxController {
   Future<void> createUserWithEmailAndPassword(
       String email, String password, String name, bool isOlderly) async {
     try {
+      await _auth.signOut();
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? currentUser = _auth.currentUser;
+      String pairCode = currentUser!.uid.substring(0, 4);
       if (currentUser != null) {
         FirebaseFirestore.instance
             .collection('users')
@@ -41,15 +44,26 @@ class AuthenticationRepository extends GetxController {
           'name': name,
           'email': email,
           'isOlderly': isOlderly,
+          'uId': currentUser.uid,
+          'pairCode': pairCode,
+          'pairedWithuId': '',
+          'medications': [],
         });
+        Get.snackbar(
+          'Success',
+          'Account created successfully',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
         Get.offAll(() => const LoginScreen());
       }
     } on FirebaseAuthException catch (e) {
       final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
       print(ex);
-    } catch (_) {
-      const ex = SignUpWithEmailAndPasswordFailure();
-      print(ex);
+    } catch (err) {
+      const err = SignUpWithEmailAndPasswordFailure();
+      print(err);
     }
   }
 

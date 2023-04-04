@@ -5,19 +5,8 @@ import 'package:get/get.dart';
 import '../models/user_model.dart';
 
 class HomeScreenController extends GetxController {
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   Rx<UserModel?> user = Rx<UserModel?>(null);
-
-  HomeScreenController() {
-    final currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      user = Rx<UserModel?>(UserModel(
-          name: currentUser.displayName ?? "",
-          email: currentUser.email ?? "",
-          isOlderly: false));
-    }
-  }
 
   @override
   void onInit() async {

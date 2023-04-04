@@ -51,6 +51,4 @@ class MainApp extends StatelessWidget {
       ],
     );
   }
-
-  // Como fazer rotas nomeadas usando Getx
 }

@@ -19,9 +19,8 @@ class HomeScreen extends StatelessWidget {
         child: Obx(() {
           final user = homeController.user.value;
           if (user != null) {
-            final userModel = user as UserModel;
             return AppBar(
-              title: Text("Home - ${userModel.name}"),
+              title: Text("Home - ${user.name}"),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.logout),
@@ -44,14 +43,67 @@ class HomeScreen extends StatelessWidget {
             Obx(() {
               final user = homeController.user.value;
               if (user != null) {
-                final userModel = user as UserModel;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Name: ${userModel.name}"),
-                    Text("Email: ${userModel.email}"),
-                    Text("É idoso: ${userModel.isOlderly}")
-                  ],
+                final medications = user.medications ?? [];
+                return Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Name: ${user.name}"),
+                        Text("Email: ${user.email}"),
+                        Text("É idoso: ${user.isOlderly}"),
+                        Text("Medicamentos:"),
+                        if (medications.isNotEmpty)
+                          Expanded(
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
+                              itemCount: medications.length,
+                              itemBuilder: (_, index) {
+                                final medication = medications[index];
+                                return Container(
+                                  margin: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(medication['name']),
+                                    subtitle: Text(
+                                      "Quantidade: ${medication['quantity']}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        user.deleteMedication(
+                                          medication['name'],
+                                        );
+                                        homeController.user.value = user;
+                                        homeController.user.refresh();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        else
+                          const Text("Nenhum medicamento cadastrado"),
+                        // Exibir medicamentos aqui
+                      ],
+                    ),
+                  ),
                 );
               } else {
                 return const CircularProgressIndicator();

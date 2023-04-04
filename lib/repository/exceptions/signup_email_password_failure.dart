@@ -22,7 +22,8 @@ class SignUpWithEmailAndPasswordFailure {
         return const SignUpWithEmailAndPasswordFailure(
             "Este usuário está desabilitado. Contate o Suporte");
       default:
-        return const SignUpWithEmailAndPasswordFailure();
+        return const SignUpWithEmailAndPasswordFailure(
+            "Um erro desconhecido ocorreu.");
     }
   }
 }
