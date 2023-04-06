@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mediplanner/controllers/add_medication_screen_controller.dart';
@@ -36,7 +38,7 @@ class AddMedicationScreen extends StatelessWidget {
                 const Text('Quantidade'),
                 TextField(
                   controller: quantity,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Digite a quantidade',
                   ),
                 ),

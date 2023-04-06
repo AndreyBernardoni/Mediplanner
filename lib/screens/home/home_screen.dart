@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mediplanner/controllers/home_screen_controller.dart.dart';
 import 'package:mediplanner/repository/authentication_repository.dart';
 
-import '../../models/user_model.dart';
+import '../medication_details/medication_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final homeController = Get.put(HomeScreenController());
@@ -52,50 +52,54 @@ class HomeScreen extends StatelessWidget {
                         Text("Name: ${user.name}"),
                         Text("Email: ${user.email}"),
                         Text("É idoso: ${user.isOlderly}"),
-                        Text("Medicamentos:"),
+                        const Text("Medicamentos:"),
                         if (medications.isNotEmpty)
                           Expanded(
                             child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                              ),
                               itemCount: medications.length,
                               itemBuilder: (_, index) {
                                 final medication = medications[index];
-                                return Container(
-                                  margin: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 10,
-                                      ),
-                                    ],
-                                  ),
-                                  child: ListTile(
-                                    title: Text(medication['name']),
-                                    subtitle: Text(
-                                      "Quantidade: ${medication['quantity']}",
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    trailing: IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () {
-                                        user.deleteMedication(
-                                          medication['name'],
-                                        );
-                                        homeController.user.value = user;
-                                        homeController.user.refresh();
-                                      },
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: Card(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("Nome: ${medication['name']}"),
+                                        Text(
+                                            "Dosagem: ${medication['quantity']}"),
+                                        Text("Frequência: "
+                                            "${medication['frequency']}"),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Get.toNamed(
+                                                "/medicationDetailsScreen",
+                                                arguments:
+                                                    const MedicationDetailsScreen());
+                                          },
+                                          child: const Text("Editar"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            user.deleteMedication(
+                                                medication['name']);
+                                            homeController.user.refresh();
+                                          },
+                                          child: const Text(
+                                            "Excluir",
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );
                               },
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10),
                             ),
                           )
                         else

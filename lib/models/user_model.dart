@@ -1,5 +1,6 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -58,7 +59,8 @@ class UserModel {
       FirebaseFirestore.instance.collection('users').doc(uId).update({
         'medications': medications,
       });
-      print("Medication: $medicationName deleted");
+
+      ("Medication: $medicationName deleted");
     } catch (e) {
       print(e);
     }

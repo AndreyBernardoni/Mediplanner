@@ -36,28 +36,23 @@ class AuthenticationRepository extends GetxController {
           email: email, password: password);
       User? currentUser = _auth.currentUser;
       String pairCode = currentUser!.uid.substring(0, 4);
-      if (currentUser != null) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .set({
-          'name': name,
-          'email': email,
-          'isOlderly': isOlderly,
-          'uId': currentUser.uid,
-          'pairCode': pairCode,
-          'pairedWithuId': '',
-          'medications': [],
-        });
-        Get.snackbar(
-          'Success',
-          'Account created successfully',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-        Get.offAll(() => const LoginScreen());
-      }
+      FirebaseFirestore.instance.collection('users').doc(currentUser.uid).set({
+        'name': name,
+        'email': email,
+        'isOlderly': isOlderly,
+        'uId': currentUser.uid,
+        'pairCode': pairCode,
+        'pairedWithuId': '',
+        'medications': [],
+      });
+      Get.snackbar(
+        'Success',
+        'Account created successfully',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      Get.offAll(() => const LoginScreen());
     } on FirebaseAuthException catch (e) {
       final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
       print(ex);
@@ -78,6 +73,6 @@ class AuthenticationRepository extends GetxController {
 
   Future<void> logout() async {
     await _auth.signOut();
-    Get.offAll(() => LoginScreen());
+    Get.offAll(() => const LoginScreen());
   }
 }
